@@ -1,0 +1,45 @@
+div#body-ini {
+    background-image: url("./fondo_navidad.png");
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+button#empezar {
+    margin-top: 6%;
+    font-size: xx-large;
+    background-color: rgb(205 61 61);
+}
+
+div#nombres {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    top: 33px;
+    font-size: x-large;
+    font-weight: 600;
+    width: 80%;
+}
+
+div#contenedorini {
+    background-color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    border-radius: 5px;
+}
+
+div#contenedorini p#hola {
+    position: relative;
+    top: 25px;
+    font-weight: 600;
+    font-size: larger;
+    margin-bottom: -5px;
+}

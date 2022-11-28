@@ -1,0 +1,15 @@
+#root > div > nav{
+    background-color: rgb(205 61 61);
+}
+
+#root > div > nav > div > a, #root > div > nav > div > button{
+    color: white;
+}
+
+#basic-navbar-nav > div > a:nth-child(1) {
+    color: white;
+}
+#basic-navbar-nav > div > a:nth-child(2) {
+    color: white;
+}
+
