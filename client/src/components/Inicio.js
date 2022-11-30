@@ -1,13 +1,13 @@
 import { Button } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
-import "./Pregunta.css"
+import "./Pregunta.css";
+import Pregunta from "./Pregunta";
 import papanoel from "./papanoel.png"
 
 function Inicio() {
     const [loading, setLoading] = useState(false);
     const [questions, setQuestions] = useState([]);
     const [number, setNumber] = useState(0);
-    const [userAnswers, setUserAnswers] = useState([]);
     const [score, setScore] = useState(0);
     const [gameOver, setGameOver] = useState(true);
     const [posiciones, setPosiciones] = useState(posRandom());
@@ -33,9 +33,7 @@ function Inicio() {
     useEffect(() => {
         if (respuestas.length && number === 0) {
             setScore(0);
-            setUserAnswers([]);
-            setNumber(0);
-            setLoading(false);
+            setTimeout(setLoading, 2000, false);
         }
     }, [respuestas]);
 
@@ -52,8 +50,20 @@ function Inicio() {
             })
     };
 
+    function guardarPartida() {
+        let partidas = JSON.parse(localStorage.getItem("partidas"));
+        let today = new Date();
+        if (partidas) {
+            partidas.push([score, today.toLocaleDateString('en-US')]);
+            localStorage.setItem("partidas", JSON.stringify(partidas));
+        } else {
+            localStorage.setItem("partidas", JSON.stringify([[score, today.toLocaleDateString('en-US')]]));
+        }
+    }
+
     function nextQuestion() {
         if (number + 1 === 10) {
+            guardarPartida();
             setGameOver(true);
         } else {
             setNumber(number + 1);
@@ -65,18 +75,30 @@ function Inicio() {
     }
 
     function chekeaYpasa(e) {
+        const resp = document.getElementsByClassName("ans");
+        let index;
+        for(let i = 0; i < resp.length; i++){
+            let res = questions[number].correct_answer;
+            if (resp[i].innerText === res || resp[i].innerText === res.substring(0, res.length-1)) {
+                index = i;
+            }
+        }
+        resp[index].setAttribute("class", "correcta");
         if (e.currentTarget.innerHTML === questions[number].correct_answer) {
             setScore(score + 1);
         }
-        nextQuestion();
+        setTimeout(() => {
+            document.getElementsByClassName("correcta")[0].setAttribute("class", "ans");
+            nextQuestion();
+        }, 1000);
+        
     }
 
 
     return (
         <div id="body-ini">
-            {gameOver || userAnswers.length === 10 ? (
+            {gameOver && number === 0 ? (
                 <div id="contenedorini">
-                    {/* <img src="https://www.gifsanimados.org/data/media/1083/papa-noel-y-santa-claus-en-navidad-imagen-animada-0502.gif" /> */}
                     <p id="hola">¡HOLA! Nostros somos</p>
                     <div id="nombres"><p>Lydia</p> <p>Davinia</p> <p>Coke</p> </div>
                     <br />
@@ -86,22 +108,30 @@ function Inicio() {
                     <Button id="empezar" variant="danger" onClick={empezarJuego}>¡Empezar a jugar!</Button>
                 </div>
             ) : null}
-            {!gameOver ? <p className="score">Score: {score}</p> : null}
-            {loading && <p>Cargando preguntas...</p>}
-            {!loading && !gameOver && (
-                <div>
-                    <img className="papanoel" src={papanoel} />
-                    <div className="preguntaContainer">
-                        <p className="pregunta" dangerouslySetInnerHTML={{ __html: questions[number].question }}></p>
-                        <button dangerouslySetInnerHTML={{ __html: respuestas[posiciones[0]] }} onClick={(e) => chekeaYpasa(e)}></button>
-                        <button dangerouslySetInnerHTML={{ __html: respuestas[posiciones[1]] }} onClick={(e) => chekeaYpasa(e)}></button>
-                        <button dangerouslySetInnerHTML={{ __html: respuestas[posiciones[2]] }} onClick={(e) => chekeaYpasa(e)}></button>
-                        <button dangerouslySetInnerHTML={{ __html: respuestas[posiciones[3]] }} onClick={(e) => chekeaYpasa(e)}></button>
-                    </div>
+
+            {gameOver && number !== 0 ? (
+                <div id="final">
+                    <img className="papanoel2" src={papanoel} />
+                   <p className="score2">Puntuación final: {score}/10</p>
+                    <Button id="empezar" variant="danger" onClick={empezarJuego}>¡Volver a jugar!</Button>
+                </div>
+            ) : null}
+
+            {loading && (
+                <div id="cargando">
+                    <p>Cargando preguntas...</p>
+                    <img src="https://i.pinimg.com/originals/37/9c/95/379c951eca41e6dcc37bb7f376a7a2f4.gif" />
                 </div>
 
-            )
-            }
+            )}
+
+            {!loading && !gameOver && (
+                <div>
+                    <p className="score">Puntuación: {score} | Pregunta: {number + 1}/10</p>
+                    <Pregunta respuestas={respuestas} posiciones={posiciones} pregunta={questions[number].question} funcion={chekeaYpasa}></Pregunta>
+                </div>
+
+            )}
         </div>
     );
 }

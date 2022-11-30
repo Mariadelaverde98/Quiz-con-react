@@ -6,16 +6,20 @@ div.preguntaContainer {
     display: grid;
     grid-template-columns: 50% 50%;
     grid-template-rows: 40% 30% 30%;
+    width: 800px
 }
 
 p.pregunta {
+    display: flex;
     grid-column-start: 1;
     grid-column-end: 3;
     margin-bottom: 30px;
     font-size: large;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-div.preguntaContainer button{
+div.preguntaContainer button {
     border: 2.5px solid rgb(205 61 61);
     border-radius: 5px;
     background-color: rgb(205 61 61 / 31%);
@@ -23,7 +27,7 @@ div.preguntaContainer button{
     margin: 1.5%;
 }
 
-div.preguntaContainer button:hover{
+div.preguntaContainer button:hover {
     border: 2.5px solid #616eff;
     border-radius: 5px;
     background-color: #616eff89;
@@ -33,4 +37,32 @@ img.papanoel {
     width: 200px;
     position: relative;
     top: 25px;
+}
+
+div.preguntaContainer button.correcta {
+    border: 2.5px solid rgb(60, 161, 40);
+    background-color: rgba(60, 161, 40, 0.479);
+}
+
+p.score {
+    background-color: aliceblue;
+    border: 4px solid rgb(205 61 61);
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-around;
+    font-size: xx-large;
+    position: relative;
+    top: 20px;
+    font-weight: bold;
+    color: rgb(205 61 61);
+}
+
+p.score2 {
+    display: flex;
+    justify-content: space-around;
+    font-size: xx-large;
+    position: relative;
+    top: 20px;
+    font-weight: bold;
+    color: rgb(205 61 61);
 }
